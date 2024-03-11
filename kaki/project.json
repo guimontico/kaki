@@ -1,0 +1,63 @@
+{
+  "name": "kaki",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "./kaki/src",
+  "targets": {
+    "build": {
+      "executor": "@analogjs/platform:vite",
+      "outputs": [
+        "{options.outputPath}",
+        "{workspaceRoot}/dist/kaki/.nitro",
+        "{workspaceRoot}/dist/kaki/ssr",
+        "{workspaceRoot}/dist/kaki/analog"
+      ],
+      "options": {
+        "main": "kaki/src/main.ts",
+        "configFile": "kaki/vite.config.ts",
+        "outputPath": "dist/kaki/client",
+        "tsConfig": "kaki/tsconfig.app.json"
+      },
+      "defaultConfiguration": "production",
+      "configurations": {
+        "development": {
+          "mode": "development"
+        },
+        "production": {
+          "sourcemap": false,
+          "mode": "production"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@analogjs/platform:vite-dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "kaki:build",
+        "port": 4200
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "kaki:build:development",
+          "hmr": true
+        },
+        "production": {
+          "buildTarget": "kaki:build:production"
+        }
+      }
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "kaki:build"
+      }
+    },
+    "test": {
+      "executor": "@analogjs/platform:vitest",
+      "outputs": [
+        "{projectRoot}/coverage"
+      ]
+    }
+  },
+  "tags": []
+}
